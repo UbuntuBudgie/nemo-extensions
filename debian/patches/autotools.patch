@@ -1,0 +1,22 @@
+Description: replace obsolete pkg-config usage
+Author: David Mohammed <fossfreedom@ubuntu.com>
+Forwarded: Not Needed
+Last-Update: 2019-02-21
+
+--- nemo-dropbox-4.0.0.orig/configure.ac
++++ nemo-dropbox-4.0.0/configure.ac
+@@ -20,10 +20,10 @@ AC_PROG_CC
+ AM_PROG_LIBTOOL
+ 
+ # Check for pkg-config
+-AC_CHECK_PROG(HAVE_PKGCONFIG, pkg-config, yes, no)
+-AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
+-if test "x$HAVE_PKGCONFIG" = "xno"; then
+-	AC_MSG_ERROR(you need to have pkgconfig installed !)
++m4_ifndef([PKG_PROG_PKG_CONFIG], [m4_fatal([Cannot self-test for pkg-config, macro PKG_PROG_PKG_CONFIG is not available.])])
++PKG_PROG_PKG_CONFIG()
++if test ["x${PKG_CONFIG}"] = ["x"] ; then
++	AC_MSG_ERROR([Cannot continue without pkg-config.])
+ fi
+ 
+ PKG_CHECK_MODULES(NEMO, libnemo-extension >= $NEMO_REQUIRED)
